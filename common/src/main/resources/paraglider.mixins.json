@@ -6,6 +6,7 @@
   "mixins": [
     "AbstractWidgetAccessor",
     "KeyMappingAccessor",
+    "Matrix4fMixin",
     "MixinDragonFightManager",
     "MixinPlayer",
     "MixinRaid"

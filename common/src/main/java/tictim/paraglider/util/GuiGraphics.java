@@ -37,6 +37,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
+import tictim.paraglider.client.util.Matrix4fAccess;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -125,7 +126,7 @@ public class GuiGraphics {
     }
 
     public void fill(int minX, int minY, int maxX, int maxY, int z, int color) {
-        this.fill(RenderType.lightning(), minX, minY, maxX, maxY, z, color);
+        this.fill(RenderType.translucentNoCrumbling(), minX, minY, maxX, maxY, z, color);
     }
 
     public void fill(RenderType renderType, int minX, int minY, int maxX, int maxY, int color) {
@@ -150,10 +151,10 @@ public class GuiGraphics {
         float h = (float)FastColor.ARGB32.green(color) / 255.0f;
         float j = (float)FastColor.ARGB32.blue(color) / 255.0f;
         VertexConsumer vertexConsumer = this.bufferSource.getBuffer(renderType);
-        vertexConsumer.vertex(matrix4f, minX, minY, z).color(g, h, j, f).endVertex();
-        vertexConsumer.vertex(matrix4f, minX, maxY, z).color(g, h, j, f).endVertex();
-        vertexConsumer.vertex(matrix4f, maxX, maxY, z).color(g, h, j, f).endVertex();
-        vertexConsumer.vertex(matrix4f, maxX, minY, z).color(g, h, j, f).endVertex();
+        vertexConsumer.vertex(matrix4f, minX, minY, z).color(g, h, j, f).uv(0, 0).uv2(0, 0).normal(1,1,1).endVertex();
+        vertexConsumer.vertex(matrix4f, minX, maxY, z).color(g, h, j, f).uv(0, 0).uv2(0, 0).normal(1,1,1).endVertex();
+        vertexConsumer.vertex(matrix4f, maxX, maxY, z).color(g, h, j, f).uv(0, 0).uv2(0, 0).normal(1,1,1).endVertex();
+        vertexConsumer.vertex(matrix4f, maxX, minY, z).color(g, h, j, f).uv(0, 0).uv2(0, 0).normal(1,1,1).endVertex();
         this.flushIfUnmanaged();
     }
 
@@ -162,7 +163,7 @@ public class GuiGraphics {
     }
 
     public void fillGradient(int x1, int y1, int x2, int y2, int z, int colorFrom, int colorTo) {
-        this.fillGradient(RenderType.lightning(), x1, y1, x2, y2, colorFrom, colorTo, z);
+        this.fillGradient(RenderType.translucentNoCrumbling(), x1, y1, x2, y2, colorFrom, colorTo, z);
     }
 
     public void fillGradient(RenderType renderType, int x1, int y1, int x2, int y2, int colorFrom, int colorTo, int z) {
@@ -181,10 +182,10 @@ public class GuiGraphics {
         float l = (float)FastColor.ARGB32.green(colorTo) / 255.0f;
         float m = (float)FastColor.ARGB32.blue(colorTo) / 255.0f;
         Matrix4f matrix4f = this.pose.last().pose();
-        consumer.vertex(matrix4f, x1, y1, z).color(g, h, i, f).endVertex();
-        consumer.vertex(matrix4f, x1, y2, z).color(k, l, m, j).endVertex();
-        consumer.vertex(matrix4f, x2, y2, z).color(k, l, m, j).endVertex();
-        consumer.vertex(matrix4f, x2, y1, z).color(g, h, i, f).endVertex();
+        consumer.vertex(matrix4f, x1, y1, z).color(g, h, i, f).uv(0, 0).uv2(0, 0).normal(1,1,1).endVertex();
+        consumer.vertex(matrix4f, x1, y2, z).color(k, l, m, j).uv(0, 0).uv2(0, 0).normal(1,1,1).endVertex();
+        consumer.vertex(matrix4f, x2, y2, z).color(k, l, m, j).uv(0, 0).uv2(0, 0).normal(1,1,1).endVertex();
+        consumer.vertex(matrix4f, x2, y1, z).color(g, h, i, f).uv(0, 0).uv2(0, 0).normal(1,1,1).endVertex();
     }
 
     public void drawCenteredString(Font font, String text, int x, int y, int color) {
@@ -398,9 +399,13 @@ public class GuiGraphics {
         this.pose.translate(x + 8, y + 8, 150 + (bakedModel.isGui3d() ? i : 0));
         try {
             boolean bl;
-            var matrix = new Matrix4f();
-            matrix.multiplyWithTranslation(1f, -1f, 1f);
-            this.pose.mulPoseMatrix(matrix);
+            var jomlMatrix = new org.joml.Matrix4f().scaling(1f, -1f, 1f);
+            var mcMatrix = new Matrix4f();
+
+            var arr = jomlMatrix.get(new float[16]);
+            ((Matrix4fAccess) (Object) mcMatrix).copyFromArray(arr);
+
+            this.pose.mulPoseMatrix(mcMatrix);
             this.pose.scale(16.0f, 16.0f, 16.0f);
             boolean bl2 = bl = !bakedModel.usesBlockLight();
             if (bl) {
@@ -447,14 +452,14 @@ public class GuiGraphics {
             int j = stack.getBarColor();
             k = x + 2;
             l = y + 13;
-            this.fill( RenderType.lightning(), k, l, k + 13, l + 2, -16777216);
-            this.fill( RenderType.lightning(), k, l, k + i, l + 1, j | 0xFF000000);
+            this.fill( RenderType.translucentNoCrumbling(), k, l, k + 13, l + 2, -16777216);
+            this.fill( RenderType.translucentNoCrumbling(), k, l, k + i, l + 1, j | 0xFF000000);
         }
         float f2 = f = (localPlayer = this.minecraft.player) == null ? 0.0f : localPlayer.getCooldowns().getCooldownPercent(stack.getItem(), this.minecraft.getFrameTime());
         if (f > 0.0f) {
             k = y + Mth.floor(16.0f * (1.0f - f));
             l = k + Mth.ceil(16.0f * f);
-            this.fill( RenderType.lightning(), x, k, x + 16, l, Integer.MAX_VALUE);
+            this.fill( RenderType.translucentNoCrumbling(), x, k, x + 16, l, Integer.MAX_VALUE);
         }
         this.pose.popPose();
     }
