@@ -28,6 +28,5 @@
     "recipes": [
       "paraglider:cosmetic/paraglider"
     ]
-  },
-  "sends_telemetry_event": true
+  }
 }

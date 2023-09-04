@@ -3,7 +3,6 @@ package tictim.paraglider.fabric.event;
 import com.google.common.base.Strings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -16,6 +15,7 @@ import tictim.paraglider.client.render.InGameStaminaWheelRenderer;
 import tictim.paraglider.client.render.StaminaWheelRenderer;
 import tictim.paraglider.client.screen.DisableStaminaRender;
 import tictim.paraglider.config.DebugCfg;
+import tictim.paraglider.util.GuiGraphics;
 
 import java.util.ArrayList;
 import java.util.List;

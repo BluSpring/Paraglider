@@ -1,6 +1,7 @@
 package tictim.paraglider.client.render;
 
 import net.minecraft.util.FastColor.ARGB32;
+import tictim.paraglider.util.FastColorHelper;
 
 public final class StaminaWheelConstants{
 	private StaminaWheelConstants(){}
@@ -27,9 +28,9 @@ public final class StaminaWheelConstants{
 	 */
 	public static int getGlowAndFadeColor(long time){
 		if(time<GLOW_FADE_START) return GLOW;
-		else if(time<GLOW_FADE_START+GLOW_FADE) return ARGB32.lerp((float)(time-GLOW_FADE_START)/GLOW_FADE, GLOW, IDLE);
+		else if(time<GLOW_FADE_START+GLOW_FADE) return FastColorHelper.lerp((float)(time-GLOW_FADE_START)/GLOW_FADE, GLOW, IDLE);
 		else if(time<FADE_START) return IDLE;
-		else if(time<FADE_START+FADE) return ARGB32.lerp((float)(time-FADE_START)/FADE, IDLE, TRANSPARENT);
+		else if(time<FADE_START+FADE) return FastColorHelper.lerp((float)(time-FADE_START)/FADE, IDLE, TRANSPARENT);
 		else return TRANSPARENT;
 	}
 

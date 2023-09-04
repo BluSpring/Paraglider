@@ -4,12 +4,12 @@ import com.google.gson.JsonObject;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import org.jetbrains.annotations.NotNull;
 import tictim.paraglider.ParagliderUtils;
@@ -58,7 +58,7 @@ public record QuantifiedItem(@NotNull ItemStack item, int quantity) implements O
 	}
 	@Environment(EnvType.CLIENT)
 	@Override @NotNull public List<@NotNull Component> getTooltip(){
-		return Screen.getTooltipFromItem(Minecraft.getInstance(), item);
+		return item.getTooltipLines(Minecraft.getInstance().player, Minecraft.getInstance().options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
 	}
 
 	@NotNull public ItemStack getItemWithQuantity(){

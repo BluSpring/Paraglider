@@ -96,7 +96,7 @@ public class ServerPlayerMovement extends PlayerMovement implements Serde{
 			this.staminaVesselChanged = false;
 		}
 
-		if(player().onGround()||player().getY()>this.prevY) this.accumulatedFallDistance = 0;
+		if(player().isOnGround()||player().getY()>this.prevY) this.accumulatedFallDistance = 0;
 		else accumulatedFallDistance += this.prevY-player().getY();
 
 		PlayerState prevState = state();
@@ -160,7 +160,7 @@ public class ServerPlayerMovement extends PlayerMovement implements Serde{
 		}
 		if(!player().isCreative()&&stamina().isDepleted()){
 			if(this.panicParaglidingDelay>0){
-				if(!player().onGround()) this.panicParaglidingDelay--;
+				if(!player().isOnGround()) this.panicParaglidingDelay--;
 				else resetPanicParaglidingState();
 			}else if(this.panicParagliding){
 				this.panicParaglidingDelay = PANIC_DELAY;

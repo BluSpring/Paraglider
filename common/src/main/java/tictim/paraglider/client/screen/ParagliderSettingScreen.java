@@ -1,14 +1,13 @@
 package tictim.paraglider.client.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +15,10 @@ import org.jetbrains.annotations.Nullable;
 import tictim.paraglider.ParagliderMod;
 import tictim.paraglider.ParagliderUtils;
 import tictim.paraglider.client.ParagliderClientSettings;
+import tictim.paraglider.util.ButtonBuilder;
+import tictim.paraglider.util.ButtonExtension;
+import tictim.paraglider.util.GuiGraphics;
+import tictim.paraglider.util.Tooltip;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -62,7 +65,7 @@ public class ParagliderSettingScreen extends Screen{
 
 	@Override protected void init(){
 		this.widgets.clear();
-		this.widgets.add(Button.builder(Component.translatable("paragliderSettings.staminaWheelSettings"),
+		this.widgets.add(new ButtonBuilder(Component.translatable("paragliderSettings.staminaWheelSettings"),
 						b -> Objects.requireNonNull(this.minecraft).setScreen(new StaminaWheelSettingScreen(this)))
 				.size(128, 20)
 				.build());
@@ -75,20 +78,20 @@ public class ParagliderSettingScreen extends Screen{
 
 		int y = (this.height-totalHeight)/2;
 		for(AbstractWidget w : this.widgets){
-			w.setX((this.width-w.getWidth())/2);
-			w.setY(y);
+			w.x = ((this.width-w.getWidth())/2);
+			w.y = (y);
 			y += w.getHeight()+10;
 		}
 
-		this.widgets.add(this.saveSettingsButton = Button.builder(saveButtonText, b -> saveSettings())
+		this.widgets.add(this.saveSettingsButton = new ButtonBuilder(saveButtonText, b -> saveSettings())
 				.bounds(this.width-128-10, this.height-20-10-20-10-20-10, 128, 20)
 				.build());
-		this.widgets.add(Button.builder(Component.translatable("paragliderSettings.openFolder"),
+		this.widgets.add(new ButtonBuilder(Component.translatable("paragliderSettings.openFolder"),
 						b -> Util.getPlatform().openUri(ParagliderClientSettings.get().configPath().getParent().toUri()))
 				.bounds(this.width-128-10, this.height-20-10-20-10, 128, 20)
 				.tooltip(Tooltip.create(Component.translatable("paragliderSettings.openFolder.tooltip")))
 				.build());
-		this.widgets.add(Button.builder(Component.translatable("paragliderSettings.reload"),
+		this.widgets.add(new ButtonBuilder(Component.translatable("paragliderSettings.reload"),
 						b -> loadSettings())
 				.bounds(this.width-128-10, this.height-20-10, 128, 20)
 				.build());
@@ -97,15 +100,19 @@ public class ParagliderSettingScreen extends Screen{
 	}
 
 	@Override
+	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+		this.render(new GuiGraphics(poseStack), mouseX, mouseY, partialTick);
+	}
+
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks){
-		renderBackground(graphics);
+		renderBackground(graphics.pose());
 
 		if(this.saveSettingsButton!=null){
 			this.saveSettingsButton.setMessage(this.particleSliderWidget!=null&&this.particleSliderWidget.dirty ?
 					saveButtonTextUnsaved : saveButtonText);
 		}
 
-		super.render(graphics, mouseX, mouseY, partialTicks);
+		super.render(graphics.pose(), mouseX, mouseY, partialTicks);
 		if(this.saveLoadAction!=null){
 			this.saveLoadAction.update();
 			int alpha = !saveLoadAction.isComplete() ? 0xFF : BargainScreen.getDialogAlpha(ms()-saveLoadAction.saveCompleteTimestamp);
@@ -127,7 +134,7 @@ public class ParagliderSettingScreen extends Screen{
 		}else return false;
 	}
 
-	private static final class ParticleSliderWidget extends AbstractSliderButton{
+	private static final class ParticleSliderWidget extends AbstractSliderButton implements ButtonExtension {
 		private boolean dirty;
 
 		public ParticleSliderWidget(int width, int height, @Nullable ParticleSliderWidget prevInstance){

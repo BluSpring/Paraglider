@@ -116,9 +116,9 @@ public final class Wind{
 		int y = Mth.floor(player.getY());
 		int z = Mth.floor(player.getZ());
 
-		place(player.level(),
-				x-XZ_RAD_HALF, y+(player.onGround() ? GROUND_Y_MIN : PARAGLIDING_Y_MIN), z-XZ_RAD_HALF,
-				x+XZ_RAD_HALF, y+(player.onGround() ? GROUND_Y_MAX : PARAGLIDING_Y_MAX), z+XZ_RAD_HALF);
+		place(player.level,
+				x-XZ_RAD_HALF, y+(player.isOnGround() ? GROUND_Y_MIN : PARAGLIDING_Y_MIN), z-XZ_RAD_HALF,
+				x+XZ_RAD_HALF, y+(player.isOnGround() ? GROUND_Y_MAX : PARAGLIDING_Y_MAX), z+XZ_RAD_HALF);
 	}
 
 	/**
@@ -141,9 +141,10 @@ public final class Wind{
 
 					if(hasFireY){
 						int height = y-fireY;
+						var aabb = state.getCollisionShape(level, mpos).bounds();
 						if(height>=10||
 								isWindSource||
-								state.blocksMotion()||
+								(aabb.getSize() >= 0.7291666666666666 || aabb.getYsize() >= 1)||
 								Block.canSupportCenter(level, mpos, Direction.DOWN)||
 								Block.canSupportCenter(level, mpos, Direction.UP)){
 							if(height>2) writeWind(x, fireY, z, height, level.getGameTime());

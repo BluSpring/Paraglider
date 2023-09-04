@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import tictim.paraglider.api.movement.Movement;
 import tictim.paraglider.api.movement.PlayerState;
 import tictim.paraglider.api.stamina.Stamina;
+import tictim.paraglider.util.FastColorHelper;
 
 import static tictim.paraglider.ParagliderUtils.ms;
 import static tictim.paraglider.client.render.StaminaWheelConstants.*;
@@ -32,7 +33,7 @@ public class InGameStaminaWheelRenderer extends StaminaWheelRenderer{
 		}else{
 			full = false;
 			boolean depleted = s.isDepleted();
-			int color = ARGB32.lerp(cycle(ms(), depleted ? DEPLETED_BLINK : BLINK), DEPLETED_1, DEPLETED_2);
+			int color = FastColorHelper.lerp(cycle(ms(), depleted ? DEPLETED_BLINK : BLINK), DEPLETED_1, DEPLETED_2);
 			Movement movement = Movement.get(player);
 			PlayerState state = movement.state();
 

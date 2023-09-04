@@ -44,20 +44,10 @@ import tictim.paraglider.config.DebugCfg;
 import tictim.paraglider.config.FeatureCfg;
 import tictim.paraglider.contents.BargainTypeRegistry;
 import tictim.paraglider.contents.Contents;
-import tictim.paraglider.impl.movement.ClientPlayerMovement;
-import tictim.paraglider.impl.movement.PlayerMovement;
-import tictim.paraglider.impl.movement.PlayerStateConnectionMap;
-import tictim.paraglider.impl.movement.PlayerStateMap;
-import tictim.paraglider.impl.movement.RemotePlayerMovement;
-import tictim.paraglider.impl.movement.ServerPlayerMovement;
+import tictim.paraglider.impl.movement.*;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -76,21 +66,21 @@ public final class ParagliderUtils{
 	 * @see net.minecraft.world.entity.player.Inventory#placeItemBackInInventory(ItemStack, boolean)
 	 */
 	public static void giveItem(@NotNull Player player, @NotNull ItemStack stack){
-		if(player.level().isClientSide) return;
+		if(player.level.isClientSide) return;
 		while(!stack.isEmpty()){
 			int slot = player.getInventory().getSlotWithRemainingSpace(stack);
 			if(slot==-1) slot = player.getInventory().getFreeSlot();
 
 			if(slot==-1){
 				while(!stack.isEmpty()){
-					ItemEntity itemEntity = new ItemEntity(player.level(),
+					ItemEntity itemEntity = new ItemEntity(player.level,
 							player.getX(),
 							player.getY(.5),
 							player.getZ(),
 							stack.split(stack.getMaxStackSize()));
 					itemEntity.setPickUpDelay(40);
 					itemEntity.setDeltaMovement(0, 0, 0);
-					player.level().addFreshEntity(itemEntity);
+					player.level.addFreshEntity(itemEntity);
 				}
 				break;
 			}

@@ -24,9 +24,9 @@ import static net.minecraft.commands.arguments.EntityArgument.player;
 import static net.minecraft.commands.arguments.ResourceLocationArgument.getId;
 import static net.minecraft.commands.arguments.ResourceLocationArgument.id;
 import static net.minecraft.commands.arguments.coordinates.BlockPosArgument.blockPos;
-import static net.minecraft.commands.arguments.coordinates.BlockPosArgument.getBlockPos;
 import static net.minecraft.commands.arguments.coordinates.Vec3Argument.getVec3;
 import static net.minecraft.commands.arguments.coordinates.Vec3Argument.vec3;
+import static tictim.paraglider.util.BlockPosArgHelper.getBlockPos;
 
 public final class ParagliderCommands{
 	private ParagliderCommands(){}
@@ -124,12 +124,12 @@ public final class ParagliderCommands{
 	                                @Nullable BlockPos pos,
 	                                @Nullable ResourceLocation advancement,
 	                                @Nullable Vec3 lookAt){
-		if(BargainTypeRegistry.get().getFromID(player.serverLevel(), bargainType)==null){
+		if(BargainTypeRegistry.get().getFromID(player.getLevel(), bargainType)==null){
 			source.sendFailure(Component.translatable("commands.paraglider.bargain.start.invalid_bargain_type", bargainType));
 			return -1;
 		}
 		if(BargainHandler.initiate(player, bargainType, pos, advancement, lookAt)){
-			source.sendSuccess(() -> Component.translatable("commands.paraglider.bargain.start.success", player.getDisplayName(), bargainType), true);
+			source.sendSuccess( Component.translatable("commands.paraglider.bargain.start.success", player.getDisplayName(), bargainType), true);
 			return 1;
 		}else{
 			source.sendFailure(Component.translatable("commands.paraglider.bargain.start.no_bargain", player.getDisplayName(), bargainType, pos));
@@ -144,7 +144,7 @@ public final class ParagliderCommands{
 				source.sendFailure(Component.translatable("command.paraglider.bargain.end.already_finished", player.getDisplayName()));
 				return 0;
 			}
-			source.sendSuccess(() -> Component.translatable("command.paraglider.bargain.end.success", player.getDisplayName()), true);
+			source.sendSuccess(Component.translatable("command.paraglider.bargain.end.success", player.getDisplayName()), true);
 			bargain.markFinished();
 			return 1;
 		}else{
@@ -198,7 +198,7 @@ public final class ParagliderCommands{
 				case STAMINA -> vessels.staminaVessel();
 				case ESSENCE -> vessels.essence();
 			};
-			source.sendSuccess(() -> Component.translatable(getResult, player.getDisplayName(), value), false);
+			source.sendSuccess(Component.translatable(getResult, player.getDisplayName(), value), false);
 			return value;
 		}
 
@@ -211,11 +211,11 @@ public final class ParagliderCommands{
 				case set -> {
 					switch(set(vessels, amount, false, true)){
 						case OK -> {
-							source.sendSuccess(() -> Component.translatable(setSuccess, player.getDisplayName(), amount), true);
+							source.sendSuccess(Component.translatable(setSuccess, player.getDisplayName(), amount), true);
 							return 1;
 						}
 						case NO_CHANGE -> {
-							source.sendSuccess(() -> Component.translatable(setNoChange, player.getDisplayName(), amount), true);
+							source.sendSuccess(Component.translatable(setNoChange, player.getDisplayName(), amount), true);
 							return 0;
 						}
 						case TOO_HIGH -> {
@@ -237,7 +237,7 @@ public final class ParagliderCommands{
 						source.sendFailure(Component.translatable(giveFail, player.getDisplayName(), amount));
 						return 0;
 					}
-					source.sendSuccess(() -> Component.translatable(giveSuccess, player.getDisplayName(), amount), true);
+					source.sendSuccess(Component.translatable(giveSuccess, player.getDisplayName(), amount), true);
 					return give(vessels, amount, false, true);
 				}
 				case take -> {
@@ -245,7 +245,7 @@ public final class ParagliderCommands{
 						source.sendFailure(Component.translatable(takeFail, player.getDisplayName(), amount));
 						return 0;
 					}
-					source.sendSuccess(() -> Component.translatable(takeSuccess, player.getDisplayName(), amount), true);
+					source.sendSuccess(Component.translatable(takeSuccess, player.getDisplayName(), amount), true);
 					return take(vessels, amount, false, true);
 				}
 			}

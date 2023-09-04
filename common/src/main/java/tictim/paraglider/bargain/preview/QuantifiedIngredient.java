@@ -3,12 +3,12 @@ package tictim.paraglider.bargain.preview;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
@@ -61,7 +61,7 @@ public record QuantifiedIngredient(
 		ItemStack[] items = ingredient.getItems();
 		if(items.length==0) return List.of();
 		ItemStack stack = items[previewIndex<0||items.length<=previewIndex ? 0 : previewIndex];
-		return Screen.getTooltipFromItem(Minecraft.getInstance(), stack);
+		return stack.getTooltipLines(Minecraft.getInstance().player, Minecraft.getInstance().options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
 	}
 
 	@NotNull public JsonElement serialize(){

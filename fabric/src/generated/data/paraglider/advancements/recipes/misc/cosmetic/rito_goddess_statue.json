@@ -28,6 +28,5 @@
     "recipes": [
       "paraglider:cosmetic/rito_goddess_statue"
     ]
-  },
-  "sends_telemetry_event": true
+  }
 }

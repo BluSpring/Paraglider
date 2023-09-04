@@ -12,7 +12,7 @@ public class Datagen implements DataGeneratorEntrypoint{
 	}
 
 	@Override public void onInitializeDataGenerator(FabricDataGenerator dataGen){
-		FabricDataGenerator.Pack pack = dataGen.createPack();
+		var pack = dataGen;
 		pack.addProvider(AdvancementGen::new);
 		pack.addProvider(BargainTypeGen::new);
 		pack.addProvider(BiomeTagGen::new);

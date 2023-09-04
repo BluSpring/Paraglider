@@ -1,14 +1,9 @@
 package tictim.paraglider.client.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +15,7 @@ import tictim.paraglider.api.ParagliderAPI;
 import tictim.paraglider.api.item.Paraglider;
 import tictim.paraglider.config.Cfg;
 import tictim.paraglider.config.DebugCfg;
+import tictim.paraglider.util.GuiGraphics;
 
 import java.util.ArrayList;
 import java.util.List;

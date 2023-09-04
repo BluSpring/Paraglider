@@ -3,7 +3,6 @@ package tictim.paraglider.contents.recipe;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -11,7 +10,6 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -56,7 +54,7 @@ public class CosmeticRecipe implements CraftingRecipe{
 		}
 		return paragliderSeen&&reagentSeen;
 	}
-	@Override @NotNull public ItemStack assemble(@NotNull CraftingContainer inv, @NotNull RegistryAccess registryAccess){
+	@Override @NotNull public ItemStack assemble(@NotNull CraftingContainer inv){
 		ItemStack paraglider = new ItemStack(recipeOut);
 		for(int i = 0; i<inv.getContainerSize(); i++){
 			ItemStack stack = inv.getItem(i);
@@ -72,7 +70,7 @@ public class CosmeticRecipe implements CraftingRecipe{
 	@Override public boolean canCraftInDimensions(int width, int height){
 		return width*height>=2;
 	}
-	@Override @NotNull public ItemStack getResultItem(@NotNull RegistryAccess registryAccess){
+	@Override @NotNull public ItemStack getResultItem(){
 		return new ItemStack(recipeOut);
 	}
 
@@ -108,9 +106,6 @@ public class CosmeticRecipe implements CraftingRecipe{
 	}
 	@Override @NotNull public RecipeSerializer<?> getSerializer(){
 		return Contents.get().cosmeticRecipeSerializer();
-	}
-	@Override @NotNull public CraftingBookCategory category(){
-		return CraftingBookCategory.MISC;
 	}
 
 	public static class Serializer implements RecipeSerializer<CosmeticRecipe>{

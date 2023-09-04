@@ -6,9 +6,9 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
-import net.minecraft.world.level.storage.loot.LootDataManager;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import tictim.paraglider.contents.Contents;
@@ -22,7 +22,7 @@ public final class FabricLootTable{
 	private static final ResourceLocation TOTW_REWORKED_OCEAN_CHEST = new ResourceLocation("totw_reworked", "ocean_tower_chest");
 
 	public static void modifyLootTables(ResourceManager resourceManager,
-	                                    LootDataManager lootManager,
+										LootTables lootTables,
 	                                    ResourceLocation id,
 	                                    LootTable.Builder lootTable,
 	                                    LootTableSource source){

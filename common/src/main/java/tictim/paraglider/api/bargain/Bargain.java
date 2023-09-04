@@ -2,7 +2,6 @@ package tictim.paraglider.api.bargain;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
@@ -82,15 +81,20 @@ public interface Bargain extends Recipe<Bargain.NoInventory>{
 	@Deprecated @Override default boolean matches(@NotNull NoInventory inv, @NotNull Level level){
 		return false;
 	}
-	@Deprecated @Override @NotNull default ItemStack assemble(@NotNull NoInventory container, @NotNull RegistryAccess registryAccess){
+
+	@Override
+	default ItemStack assemble(NoInventory container) {
 		return ItemStack.EMPTY;
 	}
 	@Deprecated @Override default boolean canCraftInDimensions(int width, int height){
 		return false;
 	}
-	@Deprecated @Override @NotNull default ItemStack getResultItem(@NotNull RegistryAccess registryAccess){
+
+	@Override
+	default ItemStack getResultItem() {
 		return ItemStack.EMPTY;
 	}
+
 	@Deprecated @Override @NotNull default NonNullList<ItemStack> getRemainingItems(NoInventory inv){
 		return NonNullList.create();
 	}

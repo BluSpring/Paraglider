@@ -2,10 +2,9 @@ package datagen;
 
 import datagen.builder.CosmeticRecipeBuilder;
 import datagen.builder.StatueBargainBuilder;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
@@ -19,14 +18,14 @@ import tictim.paraglider.contents.ParagliderTags;
 import java.util.function.Consumer;
 
 public class RecipeGen extends FabricRecipeProvider{
-	public RecipeGen(FabricDataOutput output){
+	public RecipeGen(FabricDataGenerator output){
 		super(output);
 	}
 
-	@Override public void buildRecipes(Consumer<FinishedRecipe> consumer){
+	@Override public void generateRecipes(Consumer<FinishedRecipe> consumer){
 		Contents contents = Contents.get();
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, contents.paraglider())
+		ShapedRecipeBuilder.shaped(contents.paraglider())
 				.pattern("121")
 				.pattern("212")
 				.pattern("1 1")

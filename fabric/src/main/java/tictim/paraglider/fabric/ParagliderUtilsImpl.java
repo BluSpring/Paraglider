@@ -9,7 +9,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffects;
@@ -32,8 +32,8 @@ public final class ParagliderUtilsImpl{
 
 	public static boolean canBreatheUnderwater(@NotNull Player player){
 		if(player.hasEffect(MobEffects.WATER_BREATHING)) return true;
-		if(player.onGround()){
-			if(player.canBreatheUnderwater()||player.level()
+		if(player.isOnGround()){
+			if(player.canBreatheUnderwater()||player.level
 					.getBlockState(new BlockPos((int)player.getX(), (int)player.getEyeY(), (int)player.getZ()))
 					.is(Blocks.BUBBLE_COLUMN)) return true;
 		}
@@ -48,20 +48,20 @@ public final class ParagliderUtilsImpl{
 	}
 
 	public static boolean hasTag(@NotNull Block block, @NotNull TagKey<Block> tagKey){
-		Optional<HolderSet.Named<Block>> tag = BuiltInRegistries.BLOCK.getTag(tagKey);
+		Optional<HolderSet.Named<Block>> tag = Registry.BLOCK.getTag(tagKey);
 		return tag.isPresent()&&tag.get().contains(Holder.direct(block));
 	}
 
 	@NotNull public static Item getItem(@NotNull ResourceLocation id){
-		return BuiltInRegistries.ITEM.get(id);
+		return Registry.ITEM.get(id);
 	}
 
 	@NotNull public static ResourceLocation getKey(@NotNull Item item){
-		return BuiltInRegistries.ITEM.getKey(item);
+		return Registry.ITEM.getKey(item);
 	}
 
 	@NotNull public static Block getBlock(@NotNull ResourceLocation id){
-		return BuiltInRegistries.BLOCK.get(id);
+		return Registry.BLOCK.get(id);
 	}
 
 	public static void forRemainingItem(@NotNull ItemStack stack, @NotNull Consumer<@NotNull ItemStack> forRemainingItem){

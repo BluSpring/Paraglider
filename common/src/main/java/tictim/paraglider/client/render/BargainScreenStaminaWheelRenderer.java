@@ -1,10 +1,10 @@
 package tictim.paraglider.client.render;
 
-import net.minecraft.util.FastColor.ARGB32;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import tictim.paraglider.api.vessel.VesselContainer;
 import tictim.paraglider.config.Cfg;
+import tictim.paraglider.util.FastColorHelper;
 
 import static tictim.paraglider.ParagliderUtils.ms;
 import static tictim.paraglider.client.render.StaminaWheelConstants.*;
@@ -51,7 +51,7 @@ public class BargainScreenStaminaWheelRenderer extends StaminaWheelRenderer{
 		}else if(gainedStamina&&timeSinceFull<GLOW_FADE){
 			int stamina = Cfg.get().maxStamina(vessels.staminaVessel()-1);
 			wheel.fill(0, stamina, IDLE);
-			wheel.fill(stamina, maxStamina, ARGB32.lerp((float)timeSinceFull/GLOW_FADE, GLOW, IDLE));
+			wheel.fill(stamina, maxStamina, FastColorHelper.lerp((float)timeSinceFull/GLOW_FADE, GLOW, IDLE));
 		}else{
 			wheel.fill(0, maxStamina, IDLE);
 		}

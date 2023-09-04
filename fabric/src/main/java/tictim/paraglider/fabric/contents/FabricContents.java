@@ -1,8 +1,8 @@
 package tictim.paraglider.fabric.contents;
 
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -16,11 +16,7 @@ import tictim.paraglider.api.bargain.Bargain;
 import tictim.paraglider.contents.Contents;
 import tictim.paraglider.contents.block.GoddessStatueBlock;
 import tictim.paraglider.contents.block.HornedStatueBlock;
-import tictim.paraglider.contents.item.AntiVesselItem;
-import tictim.paraglider.contents.item.EssenceItem;
-import tictim.paraglider.contents.item.HeartContainerItem;
-import tictim.paraglider.contents.item.ParagliderItem;
-import tictim.paraglider.contents.item.StaminaVesselItem;
+import tictim.paraglider.contents.item.*;
 import tictim.paraglider.contents.recipe.CosmeticRecipe;
 import tictim.paraglider.contents.worldgen.NetherHornedStatue;
 import tictim.paraglider.contents.worldgen.TarreyTownGoddessStatue;
@@ -28,7 +24,7 @@ import tictim.paraglider.contents.worldgen.UndergroundHornedStatue;
 import tictim.paraglider.fabric.contents.item.FabricParagliderItem;
 import tictim.paraglider.fabric.contents.recipe.FabricBargainSerializer;
 
-import static net.minecraft.core.registries.BuiltInRegistries.*;
+import static net.minecraft.core.Registry.*;
 import static tictim.paraglider.api.ParagliderAPI.MODID;
 import static tictim.paraglider.api.ParagliderAPI.id;
 import static tictim.paraglider.contents.CommonContents.*;
@@ -107,22 +103,21 @@ public record FabricContents(
 		var netherHornedStatuePiece = NetherHornedStatue.pieceType();
 		var undergroundHornedStatuePiece = UndergroundHornedStatue.pieceType();
 
-		var tab = FabricItemGroup.builder()
+		var tab = FabricItemGroupBuilder.create(new ResourceLocation("paraglider", "tab"))
 				.icon(() -> new ItemStack(paraglider))
-				.title(Component.translatable("itemGroup."+MODID))
-				.displayItems((features, out) -> {
-					out.accept(paraglider);
-					out.accept(dekuLeaf);
-					out.accept(heartContainer);
-					out.accept(staminaVessel);
-					out.accept(spiritOrb);
-					out.accept(antiVessel);
-					out.accept(essence);
-					out.accept(goddessStatue);
-					out.accept(kakarikoGoddessStatue);
-					out.accept(goronGoddessStatue);
-					out.accept(ritoGoddessStatue);
-					out.accept(hornedStatue);
+				.appendItems((out) -> {
+					out.add(new ItemStack(paraglider));
+					out.add(new ItemStack(dekuLeaf));
+					out.add(new ItemStack(heartContainer));
+					out.add(new ItemStack(staminaVessel));
+					out.add(new ItemStack(spiritOrb));
+					out.add(new ItemStack(antiVessel));
+					out.add(new ItemStack(essence));
+					out.add(new ItemStack(goddessStatue));
+					out.add(new ItemStack(kakarikoGoddessStatue));
+					out.add(new ItemStack(goronGoddessStatue));
+					out.add(new ItemStack(ritoGoddessStatue));
+					out.add(new ItemStack(hornedStatue));
 				}).build();
 
 		return new FabricContents(paraglider, dekuLeaf, heartContainer, staminaVessel, spiritOrb, antiVessel, essence,
@@ -159,14 +154,12 @@ public record FabricContents(
 
 		Registry.register(RECIPE_TYPE, id("bargain"), bargainRecipeType);
 
-		Registry.register(STRUCTURE_TYPE, id("tarrey_town_goddess_statue"), tarreyTownGoddessStatue);
-		Registry.register(STRUCTURE_TYPE, id("nether_horned_statue"), netherHornedStatue);
-		Registry.register(STRUCTURE_TYPE, id("underground_horned_statue"), undergroundHornedStatue);
+		Registry.register(STRUCTURE_TYPES, id("tarrey_town_goddess_statue"), tarreyTownGoddessStatue);
+		Registry.register(STRUCTURE_TYPES, id("nether_horned_statue"), netherHornedStatue);
+		Registry.register(STRUCTURE_TYPES, id("underground_horned_statue"), undergroundHornedStatue);
 
 		Registry.register(STRUCTURE_PIECE, id("tarrey_town_goddess_statue"), tarreyTownGoddessStatuePiece);
 		Registry.register(STRUCTURE_PIECE, id("nether_horned_statue"), netherHornedStatuePiece);
 		Registry.register(STRUCTURE_PIECE, id("underground_horned_statue"), undergroundHornedStatuePiece);
-
-		Registry.register(CREATIVE_MODE_TAB, id(MODID), tab);
 	}
 }

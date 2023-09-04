@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "1": {
       "item": "minecraft:stick"
@@ -16,6 +15,5 @@
   ],
   "result": {
     "item": "paraglider:paraglider"
-  },
-  "show_notification": true
+  }
 }

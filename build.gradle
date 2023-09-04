@@ -18,8 +18,10 @@ subprojects {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
         mappings loom.layered() {
             officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:2023.08.20@zip")
+            parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:2022.11.27@zip")
         }
+
+        include(api("org.joml:joml:1.10.5"))
     }
 }
 

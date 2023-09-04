@@ -151,7 +151,7 @@ public class SimpleVesselContainer implements VesselContainer, Serde, Copy{
 	}
 
 	protected void spawnParticle(@NotNull ParticleOptions particle, int count){
-		if(player!=null&&player.level() instanceof ServerLevel sl){
+		if(player!=null&&player.level instanceof ServerLevel sl){
 			sl.sendParticles(particle, player.getX(), player.getY(.5), player.getZ(), count, 1, 2, 1, 0);
 		}
 	}

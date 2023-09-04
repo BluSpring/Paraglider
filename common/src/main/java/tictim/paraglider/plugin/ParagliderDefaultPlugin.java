@@ -44,7 +44,7 @@ public class ParagliderDefaultPlugin implements MovementPlugin{
 
 		register.addBranch(IDLE,
 				(p, s, b, f) -> b&&
-						!p.onGround()&&
+						!p.isOnGround()&&
 						!p.isFallFlying()&&
 						p.getMainHandItem().getItem() instanceof Paraglider item&&
 						item.canDoParagliding(p.getMainHandItem()),
@@ -52,12 +52,12 @@ public class ParagliderDefaultPlugin implements MovementPlugin{
 
 		register.addBranch(PARAGLIDING, (p, s, b, f) -> f>=PARAGLIDING_FALL_DISTANCE&&!p.isCreative()&&Stamina.get(p).isDepleted(), PANIC_PARAGLIDING);
 		register.addBranch(PARAGLIDING,
-				(p, s, b, f) -> Cfg.get().ascendingWinds()&&Wind.isInside(p.level(), p.getBoundingBox()),
+				(p, s, b, f) -> Cfg.get().ascendingWinds()&&Wind.isInside(p.level, p.getBoundingBox()),
 				ASCENDING);
 		register.addBranch(PARAGLIDING, (p, s, b, f) -> f<PARAGLIDING_FALL_DISTANCE&&!s.has(FLAG_PARAGLIDING), IDLE);
 
 		register.addBranch(IDLE, (p, s, b, f) -> p.isSprinting()&&!p.isUsingItem(), RUNNING, RUNNING_PRIORITY);
-		register.addBranch(IDLE, (p, s, b, f) -> !p.onGround(), MIDAIR, MIDAIR_PRIORITY);
+		register.addBranch(IDLE, (p, s, b, f) -> !p.isOnGround(), MIDAIR, MIDAIR_PRIORITY);
 	}
 
 	private static final ConflictResolver<MovementPlugin, MovementPluginAction> RESOLVER = (a, p) -> {

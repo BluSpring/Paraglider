@@ -2,7 +2,6 @@ package tictim.paraglider.contents;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
@@ -23,7 +22,7 @@ public final class ParagliderVillageStructures{
 	public static void addVillageStructures(@NotNull MinecraftServer server){
 		if(!FeatureCfg.get().enableStructures()) return;
 
-		Registry<StructureTemplatePool> reg = server.registryAccess().registry(Registries.TEMPLATE_POOL).orElseThrow();
+		Registry<StructureTemplatePool> reg = server.registryAccess().registry(Registry.TEMPLATE_POOL_REGISTRY).orElseThrow();
 
 		ParagliderMod.LOGGER.debug("Start adding village structures");
 		appendPool(reg, new ResourceLocation("village/desert/houses"),

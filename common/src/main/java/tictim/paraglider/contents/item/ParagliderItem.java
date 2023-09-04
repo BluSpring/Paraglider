@@ -5,10 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeableLeatherItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +18,7 @@ public abstract class ParagliderItem extends Item implements DyeableLeatherItem,
 	private final int defaultColor;
 
 	public ParagliderItem(int defaultColor){
-		super(new Properties().stacksTo(1));
+		super(new Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC));
 		this.defaultColor = defaultColor;
 	}
 

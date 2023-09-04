@@ -6,9 +6,8 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -27,7 +26,7 @@ public class CosmeticRecipeBuilder{
 	private final Advancement.Builder advancementBuilder = Advancement.Builder.advancement();
 	private String group;
 
-	private RecipeCategory recipeCategory = RecipeCategory.MISC;
+	//private RecipeCategory recipeCategory = RecipeCategory.MISC;
 
 	public CosmeticRecipeBuilder(Item result, Ingredient input, Ingredient reagent){
 		this.result = result;
@@ -45,17 +44,17 @@ public class CosmeticRecipeBuilder{
 		return this;
 	}
 
-	public CosmeticRecipeBuilder recipeCategory(RecipeCategory category){
+	/*public CosmeticRecipeBuilder recipeCategory(RecipeCategory category){
 		this.recipeCategory = Objects.requireNonNull(category);
 		return this;
-	}
+	}*/
 
 	public void build(Consumer<FinishedRecipe> consumer){
-		this.build(consumer, Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(this.result)));
+		this.build(consumer, Objects.requireNonNull(Registry.ITEM.getKey(this.result)));
 	}
 
 	public void build(Consumer<FinishedRecipe> consumer, String save){
-		ResourceLocation resourcelocation = BuiltInRegistries.ITEM.getKey(this.result);
+		ResourceLocation resourcelocation = Registry.ITEM.getKey(this.result);
 		if((new ResourceLocation(save)).equals(resourcelocation))
 			throw new IllegalStateException("Paraglider Cosmetic Recipe "+save+" should remove its 'save' argument");
 		this.build(consumer, new ResourceLocation(save));
@@ -73,7 +72,8 @@ public class CosmeticRecipeBuilder{
 				this.input,
 				this.reagent,
 				this.advancementBuilder,
-				id.withPrefix("recipes/"+recipeCategory.getFolderName()+"/")));
+				new ResourceLocation(id.getNamespace(), "recipes/misc/" + id.getPath())
+		));
 	}
 
 	private void validate(ResourceLocation id){
@@ -105,7 +105,7 @@ public class CosmeticRecipeBuilder{
 			if(!this.group.isEmpty()) json.addProperty("group", this.group);
 			json.add("input", this.input.toJson());
 			json.add("reagent", this.reagent.toJson());
-			json.addProperty("result", Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(this.result)).toString());
+			json.addProperty("result", Objects.requireNonNull(Registry.ITEM.getKey(this.result)).toString());
 		}
 
 		@Override @NotNull public RecipeSerializer<?> getType(){

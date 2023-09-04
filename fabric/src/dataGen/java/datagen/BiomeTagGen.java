@@ -1,20 +1,17 @@
 package datagen;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.core.HolderLookup;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biomes;
 import tictim.paraglider.contents.ParagliderTags;
 
-import java.util.concurrent.CompletableFuture;
-
 public class BiomeTagGen extends BiomeTagsProvider{
-	public BiomeTagGen(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture){
-		super(output, registriesFuture);
+	public BiomeTagGen(FabricDataGenerator output){
+		super(output);
 	}
 
-	@Override protected void addTags(HolderLookup.Provider provider){
+	@Override protected void addTags(){
 		// Identical to mineshaft
 		tag(ParagliderTags.Biomes.HAS_STRUCTURE_UNDERGROUND_HORNED_STATUE)
 				.addOptionalTag(BiomeTags.IS_OCEAN.location())

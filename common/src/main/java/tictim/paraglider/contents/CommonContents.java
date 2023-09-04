@@ -3,11 +3,13 @@ package tictim.paraglider.contents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.NotNull;
 
 public interface CommonContents{
@@ -15,7 +17,7 @@ public interface CommonContents{
 	int DEKU_LEAF_DEFAULT_COLOR = 0x3FB53F;
 
 	@NotNull static BlockBehaviour.Properties statueBlock(){
-		return Block.Properties.of()
+		return Block.Properties.of(Material.STONE)
 				.sound(SoundType.STONE)
 				.requiresCorrectToolForDrops()
 				.strength(1.5f, 100f)
@@ -23,15 +25,15 @@ public interface CommonContents{
 	}
 
 	@NotNull static Item.Properties uncommonItem(){
-		return new Item.Properties().rarity(Rarity.UNCOMMON);
+		return new Item.Properties().tab(CreativeModeTab.TAB_MISC).rarity(Rarity.UNCOMMON);
 	}
 
 	@NotNull static Item.Properties rareItem(){
-		return new Item.Properties().rarity(Rarity.RARE);
+		return new Item.Properties().tab(CreativeModeTab.TAB_MISC).rarity(Rarity.RARE);
 	}
 
 	@NotNull static Item.Properties epicItem(){
-		return new Item.Properties().rarity(Rarity.EPIC);
+		return new Item.Properties().tab(CreativeModeTab.TAB_MISC).rarity(Rarity.EPIC);
 	}
 
 	@NotNull static Component kakarikoStatueTooltip(){

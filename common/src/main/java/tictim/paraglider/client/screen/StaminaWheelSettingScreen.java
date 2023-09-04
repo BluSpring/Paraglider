@@ -2,8 +2,8 @@ package tictim.paraglider.client.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -17,6 +17,8 @@ import tictim.paraglider.ParagliderMod;
 import tictim.paraglider.ParagliderUtils;
 import tictim.paraglider.client.ParagliderClientSettings;
 import tictim.paraglider.client.render.SettingsWidgetStaminaWheelRenderer;
+import tictim.paraglider.util.ButtonBuilder;
+import tictim.paraglider.util.GuiGraphics;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -44,7 +46,7 @@ public class StaminaWheelSettingScreen extends Screen implements DisableStaminaR
 
 	@Override protected void init(){
 		this.staminaWheel = addRenderableWidget(new StaminaWheel(initialStaminaWheelX, initialStaminaWheelY));
-		this.saveButton = addRenderableWidget(Button.builder(Component.translatable("adjustStamina.save"), button -> {
+		this.saveButton = addRenderableWidget(new ButtonBuilder(Component.translatable("adjustStamina.save"), button -> {
 					ParagliderMod.LOGGER.debug("Save?");
 					ParagliderClientSettings clientSettings = ParagliderClientSettings.get();
 					clientSettings.setStaminaWheel(staminaWheel.getStaminaWheelX(), staminaWheel.getStaminaWheelY());
@@ -53,7 +55,7 @@ public class StaminaWheelSettingScreen extends Screen implements DisableStaminaR
 				})
 				.bounds(0, 0, 48, 20)
 				.build());
-		this.cancelButton = addRenderableWidget(Button.builder(Component.translatable("adjustStamina.cancel"), button -> onClose())
+		this.cancelButton = addRenderableWidget(new ButtonBuilder(Component.translatable("adjustStamina.cancel"), button -> onClose())
 				.bounds(0, 0, 48, 20)
 				.build());
 		//noinspection ConstantConditions
@@ -67,20 +69,24 @@ public class StaminaWheelSettingScreen extends Screen implements DisableStaminaR
 	}
 
 	@Override
+	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+		this.render(new GuiGraphics(poseStack), mouseX, mouseY, partialTick);
+	}
+	
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks){
 		int textWidth = Arrays.stream(fuckingText).mapToInt(e -> font.width(e)).max().orElse(0)+6+48;
 		int textHeight = Math.max(fuckingText.length*font.lineHeight, 40+2)+4;
-		int textX = staminaWheel.getX()>=this.width/2 ? 0 : this.width-textWidth;
-		int textY = staminaWheel.getY()>=this.height/2 ? 0 : this.height-textHeight;
+		int textX = staminaWheel.x>=this.width/2 ? 0 : this.width-textWidth;
+		int textY = staminaWheel.y>=this.height/2 ? 0 : this.height-textHeight;
 
-		this.saveButton.setX(textX+textWidth-this.saveButton.getWidth()-2);
-		this.saveButton.setY(textY+textHeight-this.saveButton.getHeight()-2); // height realms? what?
-		this.cancelButton.setX(textX+textWidth-this.cancelButton.getWidth()-2);
-		this.cancelButton.setY(textY+textHeight-this.saveButton.getHeight()-this.cancelButton.getHeight()-4);
+		this.saveButton.x = (textX+textWidth-this.saveButton.getWidth()-2);
+		this.saveButton.y = (textY+textHeight-this.saveButton.getHeight()-2); // height realms? what?
+		this.cancelButton.x = (textX+textWidth-this.cancelButton.getWidth()-2);
+		this.cancelButton.y = (textY+textHeight-this.saveButton.getHeight()-this.cancelButton.getHeight()-4);
 
 		renderBackground(guiGraphics);
 		guiGraphics.fillGradient(textX, textY, textX+textWidth, textY+textHeight, 0x80000000, 0x80000000);
-		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		super.render(guiGraphics.pose(), mouseX, mouseY, partialTicks);
 
 		int y = textY+2;
 		for(Component t : fuckingText){
@@ -90,11 +96,15 @@ public class StaminaWheelSettingScreen extends Screen implements DisableStaminaR
 	}
 
 	@Override
+	public void renderBackground(PoseStack poseStack) {
+		this.renderBackground(new GuiGraphics(poseStack));
+	}
+
 	public void renderBackground(GuiGraphics guiGraphics){
 		//noinspection ConstantConditions
 		if(this.minecraft.level!=null){
 			guiGraphics.fillGradient(0, 0, this.width, this.height, 0x10101010, 0x30101010);
-		}else this.renderDirtBackground(guiGraphics);
+		}else this.renderDirtBackground(0);
 	}
 
 	@SuppressWarnings("ConstantConditions")
@@ -145,68 +155,76 @@ public class StaminaWheelSettingScreen extends Screen implements DisableStaminaR
 		}
 
 		public double getStaminaWheelX(){
-			return (getX()+WHEEL_RADIUS)/(double)screenWidth();
+			return (x+WHEEL_RADIUS)/(double)screenWidth();
 		}
 		public double getStaminaWheelY(){
-			return (getY()+WHEEL_RADIUS)/(double)screenHeight();
+			return (y+WHEEL_RADIUS)/(double)screenHeight();
 		}
 
 		@Override
+		public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+			this.renderWidget(new GuiGraphics(poseStack), mouseX, mouseY, partialTick);
+		}
+
 		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks){
-			this.setX(Mth.clamp(this.getX(), 1, screenWidth()-2-WHEEL_RADIUS*2));
-			this.setY(Mth.clamp(this.getY(), 1, screenHeight()-2-WHEEL_RADIUS*2));
+			this.x = (Mth.clamp(this.x, 1, screenWidth()-2-WHEEL_RADIUS*2));
+			this.y = (Mth.clamp(this.y, 1, screenHeight()-2-WHEEL_RADIUS*2));
 			if(this.visible)
-				this.wheel.renderStamina(guiGraphics, this.getX()+WHEEL_RADIUS, this.getY()+WHEEL_RADIUS, 0);
+				this.wheel.renderStamina(guiGraphics, this.x+WHEEL_RADIUS, this.y+WHEEL_RADIUS, 0);
 
 			// draw rectangle lines as an indicator for the stamina wheel
-			guiGraphics.fill(getX()-1, getY()-1, getX()+width+1, getY(), IDLE);
-			guiGraphics.fill(getX()-1, getY()+height, getX()+width+1, getY()+height+1, IDLE);
-			guiGraphics.fill(getX()-1, getY()-1, getX(), getY()+height+1, IDLE);
-			guiGraphics.fill(getX()+width, getY()-1, getX()+width+1, getY()+height+1, IDLE);
+			guiGraphics.fill(x-1, y-1, x+width+1, y, IDLE);
+			guiGraphics.fill(x-1, y+height, x+width+1, y+height+1, IDLE);
+			guiGraphics.fill(x-1, y-1, x, y+height+1, IDLE);
+			guiGraphics.fill(x+width, y-1, x+width+1, y+height+1, IDLE);
 
 			RenderSystem.setShaderColor(1, 1, 1, 1);
 			RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 
-			String s = (this.getX())+", "+(this.getY())+
+			String s = (this.x)+", "+(this.y)+
 					" ("+PERCENTAGE.format(this.getStaminaWheelX())+" :: "+PERCENTAGE.format(this.getStaminaWheelY())+")";
 			int sw = font.width(s);
 
-			int textX = Math.min(this.getX(), screenWidth()-sw-3);
-			int textY = this.getY()>=screenHeight()/2 ? this.getY()-1-font.lineHeight : this.getY()+this.height+1;
+			int textX = Math.min(this.x, screenWidth()-sw-3);
+			int textY = this.y>=screenHeight()/2 ? this.y-1-font.lineHeight : this.y+this.height+1;
 			guiGraphics.drawString(font, s, textX, textY, 0xFF00DF53);
 		}
 
 		@Override public boolean mouseClicked(double mouseX, double mouseY, int button){
 			if(active&&visible&&dragging&&button==1&&this.clicked(mouseX, mouseY)){
 				this.dragging = false;
-				this.setX(this.dragStartX);
-				this.setY(this.dragStartY);
+				this.x = (this.dragStartX);
+				this.y = (this.dragStartY);
 				return true;
 			}else return super.mouseClicked(mouseX, mouseY, button);
 		}
 
 		@Override public void onClick(double mouseX, double mouseY){
-			this.dragStartX = this.getX();
-			this.dragStartY = this.getY();
+			this.dragStartX = this.x;
+			this.dragStartY = this.y;
 			this.dragDeltaX = this.dragDeltaY = 0;
 			this.dragging = true;
 		}
 		@Override protected void onDrag(double mouseX, double mouseY, double dragX, double dragY){
 			this.dragDeltaX += dragX;
 			this.dragDeltaY += dragY;
-			this.setX((int)Math.round(this.dragStartX+this.dragDeltaX+.5));
-			this.setY((int)Math.round(this.dragStartY+this.dragDeltaY+.5));
+			this.x = ((int)Math.round(this.dragStartX+this.dragDeltaX+.5));
+			this.y = ((int)Math.round(this.dragStartY+this.dragDeltaY+.5));
 		}
 
 		@Override public void onRelease(double mouseX, double mouseY){
 			if(this.dragging){
-				this.setX((int)Math.round(this.dragStartX+this.dragDeltaX+.5));
-				this.setY((int)Math.round(this.dragStartY+this.dragDeltaY+.5));
+				this.x = ((int)Math.round(this.dragStartX+this.dragDeltaX+.5));
+				this.y = ((int)Math.round(this.dragStartY+this.dragDeltaY+.5));
 				this.dragging = false;
 			}
 		}
 
 		@Override public void playDownSound(SoundManager handler){}
-		@Override protected void updateWidgetNarration(NarrationElementOutput o){}
+
+		@Override
+		public void updateNarration(NarrationElementOutput narrationElementOutput) {
+		}
+
 	}
 }

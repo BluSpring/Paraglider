@@ -2,7 +2,7 @@ package tictim.paraglider.config;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -17,15 +17,7 @@ import org.jetbrains.annotations.Unmodifiable;
 import tictim.paraglider.ParagliderMod;
 import tictim.paraglider.ParagliderUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -106,7 +98,7 @@ public final class BlockMatcher{
 
 				if(m.group(GROUP_TAG)!=null){
 					if(tagMatches==null) tagMatches = new ObjectOpenHashSet<>();
-					tagMatches.add(TagKey.create(Registries.BLOCK, new ResourceLocation(m.group(GROUP_TAG))));
+					tagMatches.add(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(m.group(GROUP_TAG))));
 				}else{
 					Block block = ParagliderUtils.getBlock(new ResourceLocation(m.group(GROUP_BLOCK_ID)));
 					if(block==Blocks.AIR){

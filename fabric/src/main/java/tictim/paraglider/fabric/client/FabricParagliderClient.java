@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.KeyMapping;
@@ -21,7 +20,9 @@ import tictim.paraglider.contents.Contents;
 import tictim.paraglider.fabric.FabricParagliderMod;
 import tictim.paraglider.fabric.FabricParagliderNetwork;
 import tictim.paraglider.fabric.event.ParagliderClientEventHandler;
+import tictim.paraglider.fabric.util.ClientPreAttackCallback;
 import tictim.paraglider.impl.movement.PlayerStateMap;
+import tictim.paraglider.util.GuiGraphics;
 import tictim.paraglider.wind.Wind;
 import tictim.paraglider.wind.WindUtils;
 
@@ -58,7 +59,7 @@ public final class FabricParagliderClient implements ClientModInitializer{
 				"key.paraglider.paragliderSettings",
 				GLFW.GLFW_KEY_P, "key.categories.misc"));
 
-		HudRenderCallback.EVENT.register((guiGraphics, delta) -> ParagliderClientEventHandler.renderHUD(guiGraphics));
+		HudRenderCallback.EVENT.register((guiGraphics, delta) -> ParagliderClientEventHandler.renderHUD(new GuiGraphics(guiGraphics)));
 		ClientPreAttackCallback.EVENT.register((mc, player, clickCount) -> ParagliderClientEventHandler.beforeAttack(player));
 		WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register((ctx, hitResult) -> ParagliderClientEventHandler.beforeBlockOutline());
 

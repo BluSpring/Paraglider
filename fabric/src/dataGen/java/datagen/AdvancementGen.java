@@ -1,6 +1,6 @@
 package datagen;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
@@ -22,7 +22,7 @@ import static net.minecraft.advancements.critereon.ItemPredicate.Builder.item;
 import static tictim.paraglider.api.ParagliderAPI.MODID;
 
 public class AdvancementGen extends FabricAdvancementProvider{
-	protected AdvancementGen(FabricDataOutput output){
+	protected AdvancementGen(FabricDataGenerator output){
 		super(output);
 	}
 

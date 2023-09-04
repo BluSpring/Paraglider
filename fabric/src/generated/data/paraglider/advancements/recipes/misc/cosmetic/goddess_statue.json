@@ -28,6 +28,5 @@
     "recipes": [
       "paraglider:cosmetic/goddess_statue"
     ]
-  },
-  "sends_telemetry_event": true
+  }
 }

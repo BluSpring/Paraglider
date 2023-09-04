@@ -5,16 +5,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.ExtraCodecs;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
+import tictim.paraglider.util.ExtraExtraCodecs;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public record BargainDialog(@NotNull @Unmodifiable List<@NotNull Dialog> initialDialog,
                             @Nullable Dialog initialDialogFallback,
@@ -97,7 +93,7 @@ public record BargainDialog(@NotNull @Unmodifiable List<@NotNull Dialog> initial
 			@Nullable @Unmodifiable Set<@NotNull String> failReasonFilter
 	){
 		public static final Codec<Dialog> CODEC = RecordCodecBuilder.create(b -> b.group(
-				ExtraCodecs.COMPONENT.fieldOf("dialog").forGetter(d -> d.text),
+				ExtraExtraCodecs.COMPONENT.fieldOf("dialog").forGetter(d -> d.text),
 				Codec.INT.optionalFieldOf("weight", 1).forGetter(d -> d.weight),
 				Codec.STRING.listOf().optionalFieldOf("tag", List.of())
 						.forGetter(d -> d.tagFilter==null ? List.of() : List.copyOf(d.tagFilter)),

@@ -59,11 +59,11 @@ public final class BargainHandler{
 		Objects.requireNonNull(player, "player == null");
 		if(!(player instanceof ServerPlayer serverPlayer)) return false;
 
-		BargainType type = BargainTypeRegistry.get().getFromID(serverPlayer.serverLevel(),
+		BargainType type = BargainTypeRegistry.get().getFromID(serverPlayer.getLevel(),
 				Objects.requireNonNull(bargainType, "bargainType == null"));
 		if(type==null) return false;
 
-		var bargains = player.level().getRecipeManager()
+		var bargains = player.level.getRecipeManager()
 				.getAllRecipesFor(Contents.get().bargainRecipeType())
 				.stream()
 				.filter(b -> bargainType.equals(b.getBargainType())&&b.isAvailableFor(player, pos))
