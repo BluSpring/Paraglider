@@ -300,6 +300,7 @@ public final class ParagliderUtils{
 		throw new AssertionError();
 	}
 
+	@Environment(EnvType.CLIENT)
 	private static final class ClientImpl{
 		@NotNull static PlayerMovement createPlayerMovement(@NotNull Player player){
 			return player instanceof LocalPlayer localPlayer ? new ClientPlayerMovement(localPlayer) :

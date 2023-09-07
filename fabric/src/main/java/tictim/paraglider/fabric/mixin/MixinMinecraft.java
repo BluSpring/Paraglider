@@ -78,7 +78,7 @@ public abstract class MixinMinecraft{
 	private void injectHandleInputEventsForPreAttackCallback(CallbackInfo ci) {
 		int attackKeyPressCount = ((KeyMappingAccessor) options.keyAttack).getClickCount();
 
-		if (options.keyAttack.consumeClick() || attackKeyPressCount != 0) {
+		if (options.keyAttack.isDown() || attackKeyPressCount != 0) {
 			fabric_attackCancelled = ClientPreAttackCallback.EVENT.invoker().onClientPlayerPreAttack(
 					(Minecraft) (Object) this, player, attackKeyPressCount
 			);

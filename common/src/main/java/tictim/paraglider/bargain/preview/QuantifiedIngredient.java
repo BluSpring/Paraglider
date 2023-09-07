@@ -2,6 +2,8 @@ package tictim.paraglider.bargain.preview;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -57,6 +59,8 @@ public record QuantifiedIngredient(
 		}
 		return count;
 	}
+
+	@Environment(EnvType.CLIENT)
 	@Override @NotNull public List<@NotNull Component> getTooltip(int previewIndex){
 		ItemStack[] items = ingredient.getItems();
 		if(items.length==0) return List.of();
