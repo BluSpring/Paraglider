@@ -14,12 +14,14 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import tictim.paraglider.config.Cfg;
+import tictim.paraglider.util.BlockHelper;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -141,10 +143,10 @@ public final class Wind{
 
 					if(hasFireY){
 						int height = y-fireY;
-						var aabb = state.getCollisionShape(level, mpos).bounds();
+						var block = state.getBlock();
 						if(height>=10||
 								isWindSource||
-								(aabb.getSize() >= 0.7291666666666666 || aabb.getYsize() >= 1)||
+								(block != Blocks.COBWEB && block != Blocks.BAMBOO_SAPLING && BlockHelper.isSolid(state, level, mpos))||
 								Block.canSupportCenter(level, mpos, Direction.DOWN)||
 								Block.canSupportCenter(level, mpos, Direction.UP)){
 							if(height>2) writeWind(x, fireY, z, height, level.getGameTime());
